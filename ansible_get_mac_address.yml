@@ -1,0 +1,27 @@
+---
+- name: Play book to query a rest API, parse, and return the output.
+  hosts: all
+  become: True
+  sudo: yes
+  tasks:
+
+   # - name: Get JSON data from api call                                                                          
+   #   uri: url="https://api.macaddress.io" return_content=yes  
+   #   register: json_response                                                                                    
+
+    - name: Request api url 
+      uri:
+        url: https://api.macaddress.io
+        method: GET
+        return_content: yes
+        body_format: json
+        headers:
+          apiKey: "at_pmpc02z05jyIP0EhjvfNADQDuNkMC"
+
+        vars:
+          mac_aadress: "{{ mac_addresss }}"
+      register: json_reponse
+
+    - debug: msg=' Company name is {{ json_reponse["companyName"] }} '                                                                         
+      when: json_reponse["companyName"] != ""  
+---    
